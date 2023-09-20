@@ -68,10 +68,10 @@ def run(playwright: Playwright) -> None:
     
     # ---------------------------------------------------------------
     #Are you a partner, director or trustee in any other entity
-    page.locator("#cmbIsAlterAdd").select_option("No")
+    page.locator("#isQuesPartDirtTrst2").click()
     
     #Bank Account for tax refunds?
-    page.locator("#cmbHaveBankAccountDtls").select_option("No")
+    page.locator("#isQuesTrbBond2").click()
     
     time.sleep(5)
     
