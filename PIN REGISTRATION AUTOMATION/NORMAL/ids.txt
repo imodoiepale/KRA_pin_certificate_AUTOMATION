@@ -1,0 +1,26 @@
+lr number - txtTxprKELocBlockNo
+txtTxprKELocDescAddr
+txtTxprKELocLocality
+txtTxprKELocCounty
+txtTxprKELocDistrict
+txtTxprKELocCity
+txtTxprKELocBuilding
+txtTxprKELocStrtRoad
+
+
+txtTxprKELocTown
+txtTxprKELocPOBox
+txtTxprKELocpostalCode
+
+txtTxprKELocMobNo1
+txtTxprKELocMainEmail
+
+cmbIsAlterAdd
+isQuesPartDirtTrst1
+isQuesPartDirtTrst2
+isQuesTrbBond1
+isQuesTrbBond2
+
+file
+
+chkIncTaxResi
