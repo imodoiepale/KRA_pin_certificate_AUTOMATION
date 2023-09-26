@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRA Form</title>
+</head>
+<body>
+    <h1>KRA Form</h1>
+    <form id="kraForm">
+        <!-- Citizenship -->
+        <label for="citizenship">Citizenship *</label><br>
+        <input type="radio" id="kenyan" name="citizenship" value="Kenyan">
+        <label for="kenyan">Kenyan</label><br>
+        <input type="radio" id="nonKenyanResident" name="citizenship" value="Non Kenyan Resident">
+        <label for="nonKenyanResident">Non Kenyan Resident</label><br>
+        <input type="radio" id="nonKenyanNonResident" name="citizenship" value="Non Kenyan Non Resident">
+        <label for="nonKenyanNonResident">Non Kenyan Non Resident</label><br><br>
+
+        <!-- Major Group -->
+        <label for="majorGroup">Major Group *</label><br>
+        <select id="majorGroup" name="majorGroup">
+            <option value="Option 1">Option 1</option>
+            <option value="Option 2">Option 2</option>
+            <option value="Option 3">Option 3</option>
+            <option value="Option 4">Option 4</option>
+            <option value="Option 5">Option 5</option>
+        </select><br><br>
+
+        <!-- National ID Number -->
+        <label for="nationalId">National ID Number *</label><br>
+        <input type="text" id="nationalId" name="nationalId"><br><br>
+
+        <!-- Date of Birth -->
+        <label for="dateOfBirth">Date of Birth *</label><br>
+        <input type="date" id="dateOfBirth" name="dateOfBirth"><br><br>
+
+        <!-- Postal Code -->
+        <label for="postalCode">Postal Code *</label><br>
+        <input type="text" id="postalCode" name="postalCode"><br><br>
+
+        <!-- P.O. Box -->
+        <label for="poBox">P.O. Box *</label><br>
+        <input type="text" id="poBox" name="poBox"><br><br>
+
+        <!-- Town -->
+        <label for="town">Town *</label><br>
+        <input type="text" id="town" name="town"><br><br>
+
+        <!-- Mobile Number (1) -->
+        <label for="mobileNumber">Mobile Number (1) *</label><br>
+        <input type="text" id="mobileNumber" name="mobileNumber"><br><br>
+
+        <!-- Main Email Address -->
+        <label for="emailAddress">Main Email Address *</label><br>
+        <input type="email" id="emailAddress" name="emailAddress"><br><br>
+
+        <!-- Alternative Address -->
+        <label for="alternativeAddress">Do you have an Alternative Address? *</label><br>
+        <input type="radio" id="yesAlternative" name="alternativeAddress" value="Yes">
+        <label for="yesAlternative">Yes</label><br>
+        <input type="radio" id="noAlternative" name="alternativeAddress" value="No">
+        <label for="noAlternative">No</label><br><br>
+
+        <!-- Bank Account Declaration -->
+        <label for="bankAccountDeclaration">Do you wish to declare your Bank Account for tax refunds? *</label><br>
+        <input type="radio" id="yesBankAccount" name="bankAccountDeclaration" value="Yes">
+        <label for="yesBankAccount">Yes</label><br>
+        <input type="radio" id="noBankAccount" name="bankAccountDeclaration" value="No">
+        <label for="noBankAccount">No</label><br><br>
+
+        <!-- Declaration of Relationship -->
+        <label for="relationshipDeclaration">Would you like to declare your relationship with any other taxpayer? *</label><br>
+        <input type="radio" id="yesRelationship" name="relationshipDeclaration" value="Yes">
+        <label for="yesRelationship">Yes</label><br>
+        <input type="radio" id="noRelationship" name="relationshipDeclaration" value="No">
+        <label for="noRelationship">No</label><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+    <script>const { chromium } = require('playwright');
+
+(async () => {
+  const browser = await chromium.launch({ headless: false });
+  const context = await browser.newContext();
+  const page = await context.newPage();
+
+  await page.goto('https://itax.kra.go.ke/KRA-Portal/');
+  await page.locator('#newReg').findByRole('link', { name: 'Click Here' }).click();
+  await page.locator('#cmbTaxpayerType').selectOption('INDI');
+  await page.locator('#modeOfRegsitartion').selectOption('ON');
+  await page.locator('button', { name: 'Next' }).click();
+
+  await page.locator('#rdoCiti1').click();
+  await page.locator('#cmbTxprProfId').selectOption('11');
+  await page.locator('#txtTxprKENatId').fill('39794454');
+  await page.locator('#calKeTxprDOB').fill('10/11/2001');
+
+  // lr number
+  await page.locator('#txtTxprKELocBlockNo').fill('234');
+
+  // Building
+  await page.locator('#txtTxprKELocBuilding').fill('park suites');
+
+  // scroll down
+  await page.locator('body').scrollBy({ top: 500 });
+
+  // Street/Road
+  await page.locator('#txtTxprKELocStrtRoad').fill('Maasai rd');
+
+  // County
+  await page.locator('#txtTxprKELocCounty').selectOption('30');
+
+  // City/Town
+  await page.locator('#txtTxprKELocCity').fill('234');
+
+  // District
+  await page.locator('#txtTxprKELocDistrict').selectOption('93');
+
+  // Tax Area/Locality
+  await page.locator('#txtTxprKELocLocality').selectOption('664');
+
+  // Postal Code
+  await page.locator('#txtTxprKELocpostalCode').selectOption('NAIROBI GPO');
+
+  // P.O.Box
+  await page.locator('#txtTxprKELocPOBox').fill('234');
+
+  // Mobile No
+  await page.locator('#txtTxprKELocMobNo1').fill('0700000000');
+
+  // Main Email Address
+  await page.locator('#txtTxprKELocMainEmail').fill('yes@booksmartconsultancy.co.ke');
+
+  // Alternative Address?
+  await page.locator('#cmbIsAlterAdd').selectOption('No');
+
+  // Bank Account for tax refunds?
+  await page.locator('#cmbHaveBankAccountDtls').selectOption('No');
+
+  await page.locator('button', { name: 'Next' }).click();
+  await page.locator('#chkIncTaxResi').click();
+  await page.locator('#regDtIncTaxResi').fill('11/07/2023');
+  await page.locator('button', { name: 'Next' }).click();
+
+  await page.locator('#cmbSoiEmpIncome').selectOption('No');
+  await page.locator('#cmbSoiRentalInc').selectOption('No');
+  await page.locator('#cmbSoiBussInc').selectOption('No');
+  await page.locator('button', { name: 'Next' }).click();
+
+  await context.close();
+  await browser.close();
+})();
+</script>
+</body>
+</html>

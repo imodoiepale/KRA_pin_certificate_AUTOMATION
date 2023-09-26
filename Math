@@ -1,0 +1,86 @@
+import pytesseract
+from PIL import Image
+import tkinter as tk
+from tkinter import filedialog
+
+# Function to perform arithmetic operations
+def perform_operation(num1, operator, num2):
+    if operator == '+':
+        return num1 + num2
+    elif operator == '-':
+        return num1 - num2
+    else:
+        raise ValueError("Invalid operator. Only + and - are supported.")
+
+# Function to handle image upload and display result
+def process_image():
+    # Open a file dialog to select an image
+    file_path = filedialog.askopenfilename(filetypes=[("Image files", "*.png *.jpg *.jpeg *.bmp")])
+
+    if not file_path:
+        return
+
+    try:
+        # Load the selected image
+        image = Image.open(file_path)
+
+        # Use Tesseract OCR to extract text
+        extracted_text = pytesseract.image_to_string(image)
+
+        # Define a regular expression pattern for extracting the required format
+        pattern = r'(\d+)\s*([-+])\s*(\d+)\s*\?'
+
+        match = re.match(pattern, extracted_text)
+        if match:
+            num1 = int(match.group(1))
+            operator = match.group(2)
+            num2 = int(match.group(3))
+        else:
+            result_label.config(text="Invalid format. Couldn't extract numbers and operator.")
+            return
+
+        # Perform the arithmetic operation
+        try:
+            result = perform_operation(num1, operator, num2)
+            result_label.config(text=f"Result: {num1} {operator} {num2} = {result}")
+        except ValueError as e:
+            result_label.config(text=str(e))
+
+        # Close the image
+        image.close()
+
+    except Exception as e:
+        result_label.config(text=f"Error: {str(e)}")
+
+# Create the main application window
+root = tk.Tk()
+root.title("Image Calculator")
+
+# Get the screen width and height
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+
+# Set the window dimensions to half the screen width and height
+window_width = screen_width // 2
+window_height = screen_height // 2
+
+# Center the window on the screen
+x_position = (screen_width - window_width) // 2
+y_position = (screen_height - window_height) // 2
+
+# Set the window geometry
+root.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
+
+# Create a button to upload an image
+upload_button = tk.Button(root, text="Upload Image", command=process_image)
+upload_button.pack(pady=10)
+
+# Create a label to display the result
+result_label = tk.Label(root, text="", font=("Arial", 14))
+result_label.pack(pady=10)
+
+# Start the GUI event loop
+root.mainloop()
+
+
+
